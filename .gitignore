@@ -107,6 +107,12 @@ docs/_build/
 docs/site/
 site/
 
+# === Frontend Node Modules ===
+frontend/node_modules/
+frontend/dist/
+node_modules/
+dist/
+
 # === Backup Files ===
 *.bak
 *.orig
