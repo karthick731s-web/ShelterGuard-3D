@@ -1,0 +1,113 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+
+# === Virtual Environments ===
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# === IDE & Editor Files ===
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+
+# === ROS2 Build Artefacts ===
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+ros2_ws/devel/
+*.pyc
+
+# === Gazebo Simulation Logs ===
+.gazebo/
+gazebo_logs/
+*.bag
+*.db3
+*.mcap
+
+# === Inspection Reports (keep template, ignore generated) ===
+reports/inspection_report.txt
+reports/*.log
+reports/*.pdf
+!reports/.gitkeep
+
+# === LiDAR Data Files (large binary) ===
+*.pcd
+*.ply
+*.las
+*.laz
+*.bin
+*.pcap
+
+# === Point Cloud Archives ===
+*.npz
+*.npy
+data/raw/
+data/processed/
+datasets/
+
+# === Matplotlib / Visualisation Output ===
+*.png
+*.jpg
+*.jpeg
+*.svg
+!assets/*.png
+!assets/*.jpg
+!docs/*.png
+
+# === Logs ===
+*.log
+logs/
+log/
+
+# === Configuration Secrets ===
+*.env.local
+secrets.yaml
+credentials.yaml
+
+# === Unit Test Cache ===
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# === Type Checking ===
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# === Documentation Build ===
+docs/_build/
+docs/site/
+site/
+
+# === Backup Files ===
+*.bak
+*.orig
+*.backup

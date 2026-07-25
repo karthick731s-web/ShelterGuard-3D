@@ -1,0 +1,138 @@
+# =============================================================================
+# lidar.yaml — LiDAR Sensor Configuration
+# =============================================================================
+# Configuration file for the Velodyne VLP-16 (Puck) LiDAR sensor and
+# the inspection system's scan processing parameters.
+#
+# In a real ROS2 system, these values are loaded via:
+#   ros2 launch shelter_inspection inspection.launch.py
+# Or directly via the parameter server:
+#   ros2 param load /velodyne_driver velodyne_lidar_config.yaml
+#
+# Author  : Team LiDAR-Inspect
+# Project : 3D LiDAR-Based Shelter Damage Inspection System
+# License : MIT
+# =============================================================================
+
+# --- Velodyne VLP-16 Hardware Parameters ---
+velodyne_driver_node:
+  ros__parameters:
+    # Network connection
+    device_ip        : "192.168.1.201"    # Default Velodyne device IP
+    port             : 2368               # Velodyne data port (UDP)
+    gps_time         : false              # Use GPS-synchronised timestamps
+
+    # Sensor geometry
+    frame_id         : "velodyne"         # TF frame for point cloud output
+    rpm              : 600                # Rotation speed (600 = 10 Hz)
+    model            : "VLP16"            # Sensor model
+
+    # Operating mode
+    return_mode      : "Strongest"        # Return mode: Strongest / Last / Dual
+    cut_angle        : 0.0                # Section to cut from rotation (degrees)
+    timestamp_first_packet : false       # Timestamp from first or last packet
+
+# --- Velodyne Point Cloud Conversion ---
+velodyne_convert_node:
+  ros__parameters:
+    calibration      : ""                 # Path to calibration file (auto-detect)
+    min_range        : 0.10               # Minimum valid range (meters)
+    max_range        : 10.0               # Maximum range for indoor use (meters)
+    view_direction   : 0.0               # Point of direction (degrees, 0=front)
+    view_width       : 360.0             # Scan width (degrees)
+    organize_cloud   : false             # No row/col organisation needed
+
+# --- Scan preprocessing (shelter_inspection node) ---
+lidar_processor:
+  ros__parameters:
+    # Physical sensor parameters
+    horizontal_resolution_deg : 0.2       # Angular step per ray
+    vertical_channels         : 16        # Number of laser channels
+    vertical_fov_min_deg      : -15.0     # Bottom channel elevation
+    vertical_fov_max_deg      : 15.0      # Top channel elevation
+    sensor_height_m           : 0.30      # Height of sensor above ground
+
+    # Noise modelling
+    enable_noise              : true      # Apply simulated sensor noise
+    noise_sigma_m             : 0.03      # Gaussian std-dev from VLP-16 datasheet
+
+    # Statistical outlier removal filter
+    filter_window_size        : 5         # Sliding window half-width for SOR
+    filter_sigma_multiplier   : 3.0       # Rejection threshold (multiples of sigma)
+
+    # Dropout simulation
+    dropout_probability       : 0.02      # 2% per-ray dropout rate
+
+# --- Point Cloud Generation ---
+pointcloud_generator:
+  ros__parameters:
+    # Voxel grid down-sampling
+    voxel_size_m     : 0.05               # Voxel edge length for down-sampling
+    max_display_pts  : 15000             # Maximum points rendered in Matplotlib
+
+    # Coordinate frames
+    world_frame      : "map"             # Output clouds in map frame
+    sensor_frame     : "velodyne"        # Sensor TF frame
+
+# --- Environment Mapper ---
+environment_mapper:
+  ros__parameters:
+    # Occupancy grid
+    grid_resolution_m     : 0.10          # Cell size (meters)
+    floor_height_max_m    : 0.15          # Below this = floor
+    wall_height_min_m     : 0.15          # Above this = wall start
+    wall_height_max_m     : 2.80          # Above this = ceiling
+    ceiling_height_m      : 2.80          # Classification threshold
+
+# --- Damage Detector ---
+damage_detector:
+  ros__parameters:
+    # Missing wall detection
+    missing_wall_threshold_cells : 5      # Min consecutive FREE perimeter cells
+
+    # Broken roof detection
+    roof_drop_threshold_m        : 0.50   # Height drop indicating roof hole
+
+    # Hole detection
+    void_min_cells               : 8      # Min void cluster cells
+
+    # Collapse detection
+    collapse_height_m            : 1.20   # Max height for collapse debris
+
+    # Leaning wall
+    lean_normal_threshold        : 0.25   # Max allowed wall normal Z-component
+
+# --- Severity Classifier ---
+severity_classifier:
+  ros__parameters:
+    weights:
+      collapsed_section : 30.0
+      missing_wall      : 22.0
+      broken_roof       : 20.0
+      leaning_wall      : 18.0
+      large_hole        : 14.0
+
+    # Risk level score boundaries
+    safe_max     : 15
+    low_max      : 35
+    medium_max   : 55
+    high_max     : 75
+    # > 75 = CRITICAL
+
+# --- Report Generator ---
+report_generator:
+  ros__parameters:
+    output_dir       : "reports/"         # Relative to project root
+    report_filename  : "inspection_report.txt"
+    encoding         : "utf-8"
+    include_appendix : true               # Include raw damage descriptions
+
+# --- ROS2 Topics ---
+topics:
+  scan_raw         : "/velodyne_scan"     # Raw LaserScan input
+  pointcloud       : "/velodyne_points"   # PointCloud2 input
+  cmd_vel          : "/cmd_vel"           # Robot velocity commands
+  odom             : "/odom"             # Odometry feedback
+  map              : "/map"              # 2D occupancy grid output
+  damage_markers   : "/damage_markers"   # Rviz2 visualisation markers
+  severity_topic   : "/inspection/severity" # Severity score output

@@ -1,0 +1,8 @@
+This file is a placeholder to ensure the reports/ directory is tracked by Git.
+
+The actual inspection report (inspection_report.txt) will be generated here
+when main.py is executed. It is excluded from Git by .gitignore.
+
+To generate the report:
+    cd ros2_ws/src/shelter_inspection/
+    python main.py

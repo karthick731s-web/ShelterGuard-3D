@@ -1,0 +1,26 @@
+<!-- shelter.world — Gazebo .world launcher file for the damaged shelter -->
+<!-- This file is used by Gazebo's --world flag to load the simulation.   -->
+<!--                                                                       -->
+<!-- Usage:                                                                -->
+<!--   gazebo shelter.world                                                -->
+<!--   ros2 launch shelter_inspection inspection.launch.py                -->
+<!--                                                                       -->
+<!-- Author  : Team LiDAR-Inspect                                         -->
+<!-- Project : 3D LiDAR-Based Shelter Damage Inspection System           -->
+<!-- License : MIT                                                         -->
+
+<launch>
+  <arg name="world_name" default="damaged_shelter" />
+
+  <!-- Include the Gazebo launch file and pass our damaged shelter SDF -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name"
+         value="$(find shelter_inspection)/../../gazebo_world/damaged_shelter.sdf"/>
+    <arg name="paused"     value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui"        value="true"/>
+    <arg name="headless"   value="false"/>
+    <arg name="debug"      value="false"/>
+    <arg name="verbose"    value="true"/>
+  </include>
+</launch>

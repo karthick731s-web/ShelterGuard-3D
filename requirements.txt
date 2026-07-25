@@ -1,0 +1,71 @@
+# =============================================================================
+# requirements.txt
+# 3D LiDAR-Based Shelter Damage Inspection System
+# =============================================================================
+# Install all dependencies with:
+#   pip install -r requirements.txt
+#
+# For the full ROS2 + Gazebo environment, also install ROS2 Humble:
+#   https://docs.ros.org/en/humble/Installation.html
+#
+# Python version: 3.10+ recommended
+# =============================================================================
+
+# --- Core Numerical & Scientific Computing ---
+numpy>=1.24.0               # N-dimensional array mathematics (point clouds, matrices)
+scipy>=1.10.0               # Scientific algorithms (spatial trees, statistics)
+
+# --- 3D Point Cloud Processing ---
+open3d>=0.17.0              # 3D point cloud I/O, ICP registration, mesh reconstruction
+                            # Used for: point cloud visualisation, surface normals, RANSAC
+
+# --- Computer Vision ---
+opencv-python>=4.8.0        # Image processing for 2D damage analysis
+                            # Used for: occupancy grid manipulation, contour detection
+
+# --- Visualisation ---
+matplotlib>=3.7.0           # 2D/3D plotting (point cloud views, occupancy grids)
+mpl_toolkits                # Required for 3D scatter plots (included with matplotlib)
+
+# --- Data Handling ---
+pandas>=2.0.0               # Tabular data management for inspection results
+pyyaml>=6.0.0               # YAML config file parsing (lidar.yaml)
+
+# --- Geometry & Transforms ---
+transforms3d>=0.4.1         # 3D rotation representations (quaternions, Euler angles)
+                            # Used for: coordinate frame transforms matching tf2 behaviour
+
+# --- Progress & Terminal Display ---
+tqdm>=4.65.0                # Progress bars for long scan / processing operations
+colorama>=0.4.6             # Cross-platform ANSI terminal colours (Windows support)
+rich>=13.4.0                # Rich terminal output (optional, for enhanced display)
+
+# --- Logging & Configuration ---
+loguru>=0.7.0               # Enhanced logging with rotation and serialisation
+
+# --- Report Generation ---
+jinja2>=3.1.0               # Template engine for HTML report generation (future)
+reportlab>=4.0.0            # PDF report generation (optional, for formal reports)
+
+# --- Testing ---
+pytest>=7.4.0               # Test framework
+pytest-cov>=4.1.0           # Code coverage reporting
+pytest-mock>=3.11.0         # Mocking for unit tests
+
+# --- Code Quality ---
+black>=23.7.0               # Code formatter (PEP8 compliant)
+flake8>=6.1.0               # Linting
+mypy>=1.4.0                 # Type checking
+isort>=5.12.0               # Import sorting
+
+# --- ROS2 Python Client Library (install via apt on Ubuntu, listed for reference) ---
+# rclpy                     # ROS2 Python client library (apt: ros-humble-rclpy)
+# sensor_msgs               # ROS2 sensor message types (apt: ros-humble-sensor-msgs)
+# nav_msgs                  # ROS2 navigation messages (apt: ros-humble-nav-msgs)
+# geometry_msgs             # ROS2 geometry messages (apt: ros-humble-geometry-msgs)
+# std_msgs                  # ROS2 standard messages (apt: ros-humble-std-msgs)
+# tf2_ros                   # Transform library (apt: ros-humble-tf2-ros)
+# nav2_msgs                 # Navigation2 messages (apt: ros-humble-nav2-msgs)
+
+# --- System Information ---
+psutil>=5.9.0               # CPU/memory monitoring during inspection runs
